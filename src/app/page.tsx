@@ -1,8 +1,10 @@
 'use client'
 
+import { useEffect } from 'react'
 import { AppLayout, PageContainer, StatsCard } from '@/components/layout/app-layout'
 import { ProtectedRoute } from '@/components/auth/protected-route'
 import { useAppStore } from '@/lib/store'
+import { useAuth } from '@/components/auth/auth-provider'
 import {
   DollarSign,
   CheckSquare,
@@ -18,8 +20,15 @@ import { GuestsPage } from '@/components/guests/guests-page'
 import { CalendarPage } from '@/components/calendar/calendar-page'
 
 export default function Home() {
+  const { user } = useAuth()
   const {
     activeTab,
+    budgetCategories,
+    todos,
+    guests,
+    setBudgetCategories,
+    setTodos,
+    setGuests,
     getTotalBudgetSpent,
     getCompletedTodosCount,
     getPendingTodosCount,
@@ -27,18 +36,30 @@ export default function Home() {
     getPendingRSVPCount
   } = useAppStore()
 
-  // Mock data for demo
-  const totalBudget = 70000000 // 70 million IDR
-  const spentBudget = getTotalBudgetSpent() || 50000000 // 50 million IDR
-  const budgetPercentage = Math.round((spentBudget / totalBudget) * 100)
+  // Load user data when authenticated
+  useEffect(() => {
+    if (user) {
+      // TODO: Load real data from Supabase
+      // For now, we'll show empty state until data is loaded
+      console.log('User authenticated, should load data from Supabase:', user.email)
+    }
+  }, [user])
 
-  const completedTasks = getCompletedTodosCount() || 7
-  const pendingTasks = getPendingTodosCount() || 8
+  // Real data from store (no mock data)
+  const totalBudget = 100000000 // Default 100 million IDR budget
+  const spentBudget = getTotalBudgetSpent()
+  const budgetPercentage = totalBudget > 0 ? Math.round((spentBudget / totalBudget) * 100) : 0
 
-  const confirmedGuests = getConfirmedGuestsCount() || 30
-  const totalGuests = confirmedGuests + getPendingRSVPCount() || 45
+  const completedTasks = getCompletedTodosCount()
+  const pendingTasks = getPendingTodosCount()
+  const totalTasks = completedTasks + pendingTasks
 
-  const daysToWedding = 120
+  const confirmedGuests = getConfirmedGuestsCount()
+  const pendingRSVP = getPendingRSVPCount()
+  const totalGuests = confirmedGuests + pendingRSVP
+
+  // Calculate days to wedding (placeholder - should come from wedding date)
+  const daysToWedding = 120 // This should be calculated from actual wedding date
 
   // Handle different tabs
   if (activeTab === 'budget') {
@@ -102,9 +123,14 @@ export default function Home() {
       <PageContainer>
         {/* Welcome Section */}
         <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold mb-2">Wedding Planner</h1>
+          <h1 className="text-2xl font-bold mb-2">
+            Welcome to PlanWed{user?.user_metadata?.name ? `, ${user.user_metadata.name}` : ''}!
+          </h1>
           <p className="text-muted-foreground">
-            Plan your perfect wedding day
+            {budgetCategories.length === 0 && todos.length === 0 && guests.length === 0
+              ? "Let's start planning your perfect wedding day! Add your first budget, task, or guest to get started."
+              : "Plan your perfect wedding day"
+            }
           </p>
         </div>
 
@@ -112,24 +138,24 @@ export default function Home() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatsCard
             title="Budget"
-            value={`${budgetPercentage}%`}
-            subtitle={`Rp ${(spentBudget / 1000000).toFixed(0)}M used`}
+            value={spentBudget > 0 ? `${budgetPercentage}%` : "0%"}
+            subtitle={spentBudget > 0 ? `Rp ${(spentBudget / 1000000).toFixed(0)}M used` : "No expenses yet"}
             icon={<DollarSign size={20} />}
             color="primary"
           />
           <StatsCard
             title="Tasks"
-            value={`${completedTasks}/${completedTasks + pendingTasks}`}
-            subtitle={`${pendingTasks} pending`}
+            value={totalTasks > 0 ? `${completedTasks}/${totalTasks}` : "0"}
+            subtitle={totalTasks > 0 ? `${pendingTasks} pending` : "No tasks yet"}
             icon={<CheckSquare size={20} />}
-            color={pendingTasks === 0 ? 'success' : 'warning'}
+            color={totalTasks === 0 ? 'muted' : (pendingTasks === 0 ? 'success' : 'warning')}
           />
           <StatsCard
             title="Guests"
-            value={confirmedGuests}
-            subtitle={`${totalGuests} invited`}
+            value={totalGuests > 0 ? confirmedGuests : "0"}
+            subtitle={totalGuests > 0 ? `${totalGuests} invited` : "No guests yet"}
             icon={<Users size={20} />}
-            color="success"
+            color={totalGuests === 0 ? 'muted' : 'success'}
           />
           <StatsCard
             title="Days Left"
