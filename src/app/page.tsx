@@ -76,7 +76,7 @@ export default function Home() {
     return (
       <AppLayout>
         <PageContainer
-          title={activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+          title={String(activeTab).charAt(0).toUpperCase() + String(activeTab).slice(1)}
           subtitle={`Manage your wedding ${activeTab}`}
         >
           <div className="flex items-center justify-center min-h-[400px]">
