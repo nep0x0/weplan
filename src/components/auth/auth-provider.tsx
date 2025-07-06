@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import type { User, Session } from '@supabase/supabase-js'
 import { getSupabase } from '@/lib/supabase-client'
+import { EnvCheck } from '@/components/env-check'
 
 interface AuthContextType {
   user: User | null
@@ -106,9 +107,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
+    <EnvCheck>
+      <AuthContext.Provider value={value}>
+        {children}
+      </AuthContext.Provider>
+    </EnvCheck>
   )
 }
 
