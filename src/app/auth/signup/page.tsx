@@ -51,8 +51,8 @@ export default function SignUpPage() {
         alert('Please check your email to confirm your account!')
         router.push('/auth/signin')
       }
-    } catch (error: any) {
-      setError(error.message || 'Something went wrong. Please try again.')
+    } catch (error: unknown) {
+      setError(error instanceof Error ? error.message : 'Something went wrong. Please try again.')
     } finally {
       setIsLoading(false)
     }

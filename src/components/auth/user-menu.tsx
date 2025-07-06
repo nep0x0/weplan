@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useAuth } from './auth-provider'
-import { Button } from '@/components/ui/button'
 import { User, LogOut, Settings, Heart } from 'lucide-react'
 
 export function UserMenu() {

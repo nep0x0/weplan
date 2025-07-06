@@ -1,13 +1,8 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import { createClient } from '@supabase/supabase-js'
 import type { User, Session } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+import { getSupabase } from '@/lib/supabase-client'
 
 interface AuthContextType {
   user: User | null
@@ -31,8 +26,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const supabaseClient = getSupabase()
+
     // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabaseClient.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)
       setLoading(false)
@@ -41,7 +38,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
+    } = supabaseClient.auth.onAuthStateChange((_event, session) => {
       setSession(session)
       setUser(session?.user ?? null)
       setLoading(false)
@@ -51,7 +48,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const supabaseClient = getSupabase()
+    const { error } = await supabaseClient.auth.signInWithPassword({
       email,
       password,
     })
@@ -64,7 +62,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   const signUp = async (email: string, password: string, name: string) => {
-    const { error } = await supabase.auth.signUp({
+    const supabaseClient = getSupabase()
+    const { error } = await supabaseClient.auth.signUp({
       email,
       password,
       options: {
@@ -82,11 +81,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   const signOut = async () => {
-    await supabase.auth.signOut()
+    const supabaseClient = getSupabase()
+    await supabaseClient.auth.signOut()
   }
 
   const signInWithGoogle = async () => {
-    await supabase.auth.signInWithOAuth({
+    const supabaseClient = getSupabase()
+    await supabaseClient.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo: `${window.location.origin}/`,
@@ -119,4 +120,4 @@ export function useAuth() {
   return context
 }
 
-export { supabase }
+export { getSupabase }
