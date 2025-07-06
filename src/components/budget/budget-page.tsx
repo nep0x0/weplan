@@ -20,27 +20,33 @@ export function BudgetPage() {
     budgetCategories,
     deleteBudgetCategory
   } = useAppStore()
-  
+
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingCategory, setEditingCategory] = useState<string | null>(null)
-
-
 
   // Use real data only
   const displayTotalAllocated = budgetCategories.reduce((sum, cat) => sum + cat.allocated_amount, 0)
   const displayTotalSpent = budgetCategories.reduce((sum, cat) => sum + cat.spent_amount, 0)
   const displaySpentPercentage = displayTotalAllocated > 0 ? Math.round((displayTotalSpent / displayTotalAllocated) * 100) : 0
 
-
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount)
+  }
 
   const formatShortCurrency = (amount: number) => {
-    if (amount >= 1000000) {
-      return `Rp ${(amount / 1000000).toFixed(0)}M`
-    }
-    if (amount >= 1000) {
+    if (amount >= 1000000000) {
+      return `Rp ${(amount / 1000000000).toFixed(1)}B`
+    } else if (amount >= 1000000) {
+      return `Rp ${(amount / 1000000).toFixed(1)}M`
+    } else if (amount >= 1000) {
       return `Rp ${(amount / 1000).toFixed(0)}K`
     }
-    return `Rp ${amount}`
+    return formatCurrency(amount)
   }
 
   const handleDeleteCategory = (id: string) => {
@@ -63,34 +69,7 @@ export function BudgetPage() {
       {/* Budget Overview */}
       <div className="space-y-6">
         {/* Total Budget Card */}
-        <AppCard className="text-center">
-          <div className="space-y-proportional">
-            <div>
-              <h2 className="text-responsive-xl font-bold text-primary leading-comfortable">{displaySpentPercentage}%</h2>
-              <p className="text-muted-foreground text-responsive-sm leading-relaxed-mobile">Budget Used</p>
-            </div>
-
-            <BudgetProgress
-              spent={displayTotalSpent}
-              allocated={displayTotalAllocated}
-              className="max-w-xs mx-auto"
-            />
-
-            <div className="flex justify-between text-responsive-sm gap-4">
-              <div className="flex-text-safe">
-                <p className="font-medium truncate">{formatShortCurrency(displayTotalSpent)}</p>
-                <p className="text-muted-foreground">Spent</p>
-              </div>
-              <div className="flex-text-safe text-right">
-                <p className="font-medium truncate">{formatShortCurrency(displayTotalAllocated)}</p>
-                <p className="text-muted-foreground">Budget</p>
-              </div>
-            </div>
-          </div>
-        </AppCard>
-
-        {/* Quick Stats */}
-        <div className="grid grid-cols-3 grid-proportional">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <AppCard className="text-center">
             <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
               <DollarSign size={20} className="text-primary" />
@@ -100,29 +79,42 @@ export function BudgetPage() {
           </AppCard>
           
           <AppCard className="text-center">
-            <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center mx-auto mb-2">
-              <TrendingUp size={20} className="text-success" />
+            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2">
+              <TrendingUp size={20} className="text-orange-600" />
             </div>
             <p className="text-lg font-semibold">{formatShortCurrency(displayTotalSpent)}</p>
             <p className="text-xs text-muted-foreground">Total Spent</p>
           </AppCard>
           
           <AppCard className="text-center">
-            <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-2">
-              <PieChart size={20} className="text-orange-600" />
+            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-2">
+              <PieChart size={20} className="text-green-600" />
             </div>
-            <p className="text-lg font-semibold">{formatShortCurrency(displayTotalAllocated - displayTotalSpent)}</p>
-            <p className="text-xs text-muted-foreground">Remaining</p>
+            <p className="text-lg font-semibold">{displaySpentPercentage}%</p>
+            <p className="text-xs text-muted-foreground">Budget Used</p>
           </AppCard>
         </div>
 
-        {/* Categories Section */}
+        {/* Budget Progress */}
+        {displayTotalAllocated > 0 && (
+          <AppCard>
+            <h3 className="font-semibold mb-4">Budget Overview</h3>
+            <BudgetProgress
+              spent={displayTotalSpent}
+              allocated={displayTotalAllocated}
+              showPercentage={true}
+              size="lg"
+            />
+          </AppCard>
+        )}
+
+        {/* Categories */}
         <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold">Categories</h3>
-            <Button variant="outline" size="sm" onClick={() => setShowAddForm(true)}>
+            <h3 className="font-semibold">Budget Categories</h3>
+            <Button onClick={() => setShowAddForm(true)} size="sm">
               <Plus size={16} className="mr-2" />
-              Add
+              Add Category
             </Button>
           </div>
 
@@ -142,64 +134,55 @@ export function BudgetPage() {
               </div>
             ) : (
               budgetCategories.map((category) => {
-              const categoryPercentage = category.allocated_amount > 0 
-                ? Math.round((category.spent_amount / category.allocated_amount) * 100) 
-                : 0
-              
-              return (
-                <AppCard key={category.id} className="p-4">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-3">
+                const categoryPercentage = category.allocated_amount > 0 
+                  ? Math.round((category.spent_amount / category.allocated_amount) * 100) 
+                  : 0
+                
+                return (
+                  <AppCard key={category.id} className="p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <div 
+                          className="w-4 h-4 rounded-full"
+                          style={{ backgroundColor: category.color }}
+                        />
+                        <div>
+                          <h4 className="font-medium">{category.name}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {formatCurrency(category.spent_amount)} of {formatCurrency(category.allocated_amount)}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium">{categoryPercentage}%</span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => setEditingCategory(category.id)}
+                        >
+                          <Edit size={14} />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteCategory(category.id)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 size={14} />
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2">
                       <div 
-                        className="w-4 h-4 rounded-full"
-                        style={{ backgroundColor: category.color }}
-                      />
-                      <h4 className="font-medium">{category.name}</h4>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setEditingCategory(category.id)}
-                      >
-                        <Edit size={14} />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDeleteCategory(category.id)}
-                      >
-                        <Trash2 size={14} />
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>{formatShortCurrency(category.spent_amount)}</span>
-                      <span className="text-muted-foreground">
-                        {formatShortCurrency(category.allocated_amount)}
-                      </span>
-                    </div>
-                    
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div
                         className="h-2 rounded-full transition-all duration-300"
                         style={{ 
                           width: `${Math.min(categoryPercentage, 100)}%`,
-                          backgroundColor: category.color
+                          backgroundColor: category.color 
                         }}
                       />
                     </div>
-                    
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>{categoryPercentage}% used</span>
-                      <span>
-                        {formatShortCurrency(category.allocated_amount - category.spent_amount)} left
-                      </span>
-                    </div>
-                  </div>
-                </AppCard>
+                  </AppCard>
+                )
               })
             )}
           </div>
