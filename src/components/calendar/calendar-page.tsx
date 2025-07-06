@@ -4,29 +4,27 @@ import { useState } from 'react'
 import { PageContainer, AppCard } from '@/components/layout/app-layout'
 import { Button } from '@/components/ui/button'
 import { useAppStore } from '@/lib/store'
-import { 
-  Plus, 
-  Calendar as CalendarIcon, 
+import {
+  Plus,
+  Calendar as CalendarIcon,
   Clock,
-  MapPin,
   Users,
   AlertTriangle,
   ChevronLeft,
   ChevronRight,
-  Filter,
   List,
   Grid3X3
 } from 'lucide-react'
 import { CalendarView } from './calendar-view'
 import { EventForm } from './event-form'
 import { EventItem } from './event-item'
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isToday, parseISO, isSameDay } from 'date-fns'
+import { format, startOfMonth, endOfMonth, parseISO, isSameDay } from 'date-fns'
 
 type ViewType = 'month' | 'list'
 type FilterType = 'all' | 'appointment' | 'deadline' | 'reminder' | 'ceremony'
 
 export function CalendarPage() {
-  const { calendarEvents, updateCalendarEvent, deleteCalendarEvent } = useAppStore()
+  const { calendarEvents, deleteCalendarEvent } = useAppStore()
   
   const [currentDate, setCurrentDate] = useState(new Date())
   const [viewType, setViewType] = useState<ViewType>('month')
@@ -120,10 +118,6 @@ export function CalendarPage() {
   // Get events for current month
   const monthStart = startOfMonth(currentDate)
   const monthEnd = endOfMonth(currentDate)
-  const monthEvents = filteredEvents.filter(event => {
-    const eventDate = parseISO(event.start_date)
-    return eventDate >= monthStart && eventDate <= monthEnd
-  })
 
   // Get upcoming events (next 7 days)
   const today = new Date()
@@ -182,20 +176,7 @@ export function CalendarPage() {
     }
   }
 
-  const getEventTypeColor = (type: string) => {
-    switch (type) {
-      case 'ceremony':
-        return 'bg-primary/10 text-primary border-primary/20'
-      case 'appointment':
-        return 'bg-blue-50 text-blue-700 border-blue-200'
-      case 'deadline':
-        return 'bg-orange-50 text-orange-700 border-orange-200'
-      case 'reminder':
-        return 'bg-purple-50 text-purple-700 border-purple-200'
-      default:
-        return 'bg-muted text-muted-foreground border-border'
-    }
-  }
+
 
   const eventTypeCounts = {
     all: mockEvents.length,

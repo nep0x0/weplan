@@ -20,7 +20,6 @@ export default function Home() {
   const {
     activeTab,
     getTotalBudgetSpent,
-    getTotalBudgetAllocated,
     getCompletedTodosCount,
     getPendingTodosCount,
     getConfirmedGuestsCount,

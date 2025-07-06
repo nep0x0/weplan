@@ -28,8 +28,6 @@ export function BudgetPage() {
 
   const totalAllocated = getTotalBudgetAllocated()
   const totalSpent = getTotalBudgetSpent()
-  const remainingBudget = totalAllocated - totalSpent
-  const spentPercentage = totalAllocated > 0 ? Math.round((totalSpent / totalAllocated) * 100) : 0
 
   // Mock data for demo if no categories exist
   const mockCategories = budgetCategories.length === 0 ? [
@@ -79,14 +77,7 @@ export function BudgetPage() {
   const displayTotalSpent = mockCategories.reduce((sum, cat) => sum + cat.spent_amount, 0)
   const displaySpentPercentage = displayTotalAllocated > 0 ? Math.round((displayTotalSpent / displayTotalAllocated) * 100) : 0
 
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('id-ID', {
-      style: 'currency',
-      currency: 'IDR',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(amount)
-  }
+
 
   const formatShortCurrency = (amount: number) => {
     if (amount >= 1000000) {

@@ -5,17 +5,14 @@ import { PageContainer, AppCard } from '@/components/layout/app-layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAppStore } from '@/lib/store'
-import { 
-  Plus, 
-  Search, 
+import {
+  Plus,
+  Search,
   Filter,
   CheckCircle2,
   Circle,
   Clock,
-  AlertTriangle,
-  Calendar,
-  Edit,
-  Trash2
+  AlertTriangle
 } from 'lucide-react'
 import { TodoForm } from './todo-form'
 import { TodoItem } from './todo-item'
@@ -25,12 +22,10 @@ type FilterType = 'all' | 'pending' | 'completed' | 'overdue' | 'today'
 type SortType = 'priority' | 'dueDate' | 'created'
 
 export function TodosPage() {
-  const { 
-    todos, 
-    getCompletedTodosCount, 
-    getPendingTodosCount,
+  const {
+    todos,
     updateTodo,
-    deleteTodo 
+    deleteTodo
   } = useAppStore()
   
   const [showAddForm, setShowAddForm] = useState(false)
@@ -169,20 +164,7 @@ export function TodosPage() {
     }
   }
 
-  const formatDueDate = (dateString: string) => {
-    const date = parseISO(dateString)
-    if (isToday(date)) return 'Today'
-    if (isTomorrow(date)) return 'Tomorrow'
-    return format(date, 'MMM d')
-  }
 
-  const getDueDateColor = (dateString: string, completed: boolean) => {
-    if (completed) return 'text-muted-foreground'
-    const date = parseISO(dateString)
-    if (isPast(date)) return 'text-red-600'
-    if (isToday(date)) return 'text-orange-600'
-    return 'text-muted-foreground'
-  }
 
   const filters = [
     { key: 'all' as const, label: 'All', count: mockTodos.length },

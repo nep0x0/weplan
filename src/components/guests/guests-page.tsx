@@ -5,18 +5,13 @@ import { PageContainer, AppCard } from '@/components/layout/app-layout'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { useAppStore } from '@/lib/store'
-import { 
-  Plus, 
-  Search, 
+import {
+  Plus,
+  Search,
   Filter,
   Users,
   UserCheck,
-  UserX,
   Clock,
-  Phone,
-  Mail,
-  Edit,
-  Trash2,
   Download,
   Upload
 } from 'lucide-react'
@@ -27,12 +22,10 @@ type FilterType = 'all' | 'yes' | 'no' | 'pending'
 type SortType = 'name' | 'rsvp' | 'plusOnes' | 'created'
 
 export function GuestsPage() {
-  const { 
-    guests, 
-    getConfirmedGuestsCount, 
-    getPendingRSVPCount,
+  const {
+    guests,
     updateGuest,
-    deleteGuest 
+    deleteGuest
   } = useAppStore()
   
   const [showAddForm, setShowAddForm] = useState(false)
