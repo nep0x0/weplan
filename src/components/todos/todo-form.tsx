@@ -37,10 +37,16 @@ const categories = [
 export function TodoForm({ todoId, onClose }: TodoFormProps) {
   const { todos, addTodo, updateTodo } = useAppStore()
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string
+    description: string
+    priority: 'high' | 'medium' | 'low'
+    due_date: string
+    category: string
+  }>({
     title: '',
     description: '',
-    priority: 'medium' as const,
+    priority: 'medium',
     due_date: '',
     category: ''
   })
