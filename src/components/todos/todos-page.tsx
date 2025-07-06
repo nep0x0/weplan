@@ -240,14 +240,16 @@ export function TodosPage() {
               <button
                 key={filter.key}
                 onClick={() => setActiveFilter(filter.key)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
+                className={`inline-flex items-center gap-2 px-3 py-2 rounded-lg text-responsive-xs font-medium whitespace-nowrap transition-all min-w-0 flex-shrink-0 ${
                   activeFilter === filter.key
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted text-muted-foreground hover:bg-muted/80'
                 }`}
               >
-                {filter.label}
-                <span className={`px-1.5 py-0.5 rounded-full text-xs ${
+                <span className="truncate">
+                  {filter.label}
+                </span>
+                <span className={`inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-xs font-medium flex-shrink-0 ${
                   activeFilter === filter.key
                     ? 'bg-primary-foreground/20 text-primary-foreground'
                     : 'bg-background text-foreground'

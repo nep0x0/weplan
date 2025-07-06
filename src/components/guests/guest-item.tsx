@@ -247,10 +247,10 @@ export function GuestItem({ guest, onUpdateRSVP, onEdit, onDelete }: GuestItemPr
                   variant="outline"
                   size="sm"
                   onClick={() => onUpdateRSVP(guest.id, 'yes')}
-                  className="h-7 px-3 text-xs"
+                  className="h-7 px-2 text-responsive-xs min-w-0 flex-shrink-0"
                 >
-                  <UserCheck size={12} className="mr-1" />
-                  Mark as Confirmed
+                  <UserCheck size={12} className="mr-1 flex-shrink-0" />
+                  <span className="truncate">Confirmed</span>
                 </Button>
               )}
               {guest.rsvp_status !== 'no' && (
@@ -258,20 +258,20 @@ export function GuestItem({ guest, onUpdateRSVP, onEdit, onDelete }: GuestItemPr
                   variant="outline"
                   size="sm"
                   onClick={() => onUpdateRSVP(guest.id, 'no')}
-                  className="h-7 px-3 text-xs"
+                  className="h-7 px-2 text-responsive-xs min-w-0 flex-shrink-0"
                 >
-                  <UserX size={12} className="mr-1" />
-                  Mark as Declined
+                  <UserX size={12} className="mr-1 flex-shrink-0" />
+                  <span className="truncate">Declined</span>
                 </Button>
               )}
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => onUpdateRSVP(guest.id, 'pending')}
-                className="h-7 px-3 text-xs"
+                className="h-7 px-2 text-responsive-xs min-w-0 flex-shrink-0"
               >
-                <Clock size={12} className="mr-1" />
-                Mark as Pending
+                <Clock size={12} className="mr-1 flex-shrink-0" />
+                <span className="truncate">Pending</span>
               </Button>
             </div>
           </div>
