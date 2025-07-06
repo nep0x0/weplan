@@ -15,11 +15,19 @@ interface GuestFormProps {
 export function GuestForm({ guestId, onClose }: GuestFormProps) {
   const { guests, addGuest, updateGuest } = useAppStore()
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string
+    email: string
+    phone: string
+    rsvp_status: 'pending' | 'yes' | 'no'
+    plus_ones: number
+    dietary_restrictions: string
+    table_number: string
+  }>({
     name: '',
     email: '',
     phone: '',
-    rsvp_status: 'pending' as const,
+    rsvp_status: 'pending',
     plus_ones: 0,
     dietary_restrictions: '',
     table_number: ''
