@@ -26,8 +26,7 @@ export function BudgetPage() {
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingCategory, setEditingCategory] = useState<string | null>(null)
 
-  const totalAllocated = getTotalBudgetAllocated()
-  const totalSpent = getTotalBudgetSpent()
+
 
   // Mock data for demo if no categories exist
   const mockCategories = budgetCategories.length === 0 ? [

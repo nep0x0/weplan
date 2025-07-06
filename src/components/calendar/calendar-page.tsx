@@ -18,7 +18,7 @@ import {
 import { CalendarView } from './calendar-view'
 import { EventForm } from './event-form'
 import { EventItem } from './event-item'
-import { format, startOfMonth, endOfMonth, parseISO, isSameDay } from 'date-fns'
+import { parseISO, isSameDay } from 'date-fns'
 
 type ViewType = 'month' | 'list'
 type FilterType = 'all' | 'appointment' | 'deadline' | 'reminder' | 'ceremony'
@@ -115,9 +115,7 @@ export function CalendarPage() {
     return event.type === activeFilter
   })
 
-  // Get events for current month
-  const monthStart = startOfMonth(currentDate)
-  const monthEnd = endOfMonth(currentDate)
+
 
   // Get upcoming events (next 7 days)
   const today = new Date()

@@ -16,7 +16,7 @@ import {
 } from 'lucide-react'
 import { TodoForm } from './todo-form'
 import { TodoItem } from './todo-item'
-import { format, isToday, isTomorrow, isPast, parseISO } from 'date-fns'
+import { isToday, isPast, parseISO } from 'date-fns'
 
 type FilterType = 'all' | 'pending' | 'completed' | 'overdue' | 'today'
 type SortType = 'priority' | 'dueDate' | 'created'
