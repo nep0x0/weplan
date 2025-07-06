@@ -16,11 +16,9 @@ import { BudgetCategoryForm } from './budget-category-form'
 import { BudgetProgress } from './budget-progress'
 
 export function BudgetPage() {
-  const { 
-    budgetCategories, 
-    getTotalBudgetSpent, 
-    getTotalBudgetAllocated,
-    deleteBudgetCategory 
+  const {
+    budgetCategories,
+    deleteBudgetCategory
   } = useAppStore()
   
   const [showAddForm, setShowAddForm] = useState(false)
