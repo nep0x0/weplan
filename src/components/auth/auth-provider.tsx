@@ -23,22 +23,65 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
-  const [loading] = useState(false) // Set to false for now to avoid loading issues
+  const [loading, setLoading] = useState(true)
 
-  // Simplified auth initialization
   useEffect(() => {
+    let mounted = true
+
     const initAuth = async () => {
       try {
         const supabaseClient = getSupabase()
-        const { data: { session } } = await supabaseClient.auth.getSession()
-        setSession(session)
-        setUser(session?.user ?? null)
+
+        // Get initial session
+        const { data: { session }, error } = await supabaseClient.auth.getSession()
+
+        if (mounted) {
+          if (error) {
+            console.error('Auth session error:', error)
+          }
+          setSession(session)
+          setUser(session?.user ?? null)
+          setLoading(false)
+        }
+
+        // Listen for auth changes
+        const { data: { subscription } } = supabaseClient.auth.onAuthStateChange(
+          (event, session) => {
+            if (mounted) {
+              console.log('Auth state changed:', event)
+              setSession(session)
+              setUser(session?.user ?? null)
+            }
+          }
+        )
+
+        return () => {
+          subscription.unsubscribe()
+        }
+
       } catch (error) {
         console.error('Auth initialization error:', error)
+        if (mounted) {
+          setLoading(false)
+        }
       }
     }
 
-    initAuth()
+    const cleanup = initAuth()
+
+    // Fallback timeout to prevent infinite loading
+    const timeout = setTimeout(() => {
+      if (mounted) {
+        console.log('Auth timeout fallback')
+        setLoading(false)
+      }
+    }, 3000)
+
+    return () => {
+      mounted = false
+      clearTimeout(timeout)
+      cleanup?.then(cleanupFn => cleanupFn?.())
+    }
   }, [])
 
   const signIn = async (email: string, password: string) => {

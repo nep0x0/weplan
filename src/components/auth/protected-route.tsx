@@ -15,6 +15,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   useEffect(() => {
     if (!loading && !user) {
+      console.log('Redirecting to sign in - no user found')
       router.push('/auth/signin')
     }
   }, [user, loading, router])

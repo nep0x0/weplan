@@ -1,6 +1,7 @@
 'use client'
 
 import { AppLayout, PageContainer, StatsCard } from '@/components/layout/app-layout'
+import { ProtectedRoute } from '@/components/auth/protected-route'
 import { useAppStore } from '@/lib/store'
 import {
   DollarSign,
@@ -96,7 +97,8 @@ export default function Home() {
   }
 
   return (
-    <AppLayout>
+    <ProtectedRoute>
+      <AppLayout>
       <PageContainer>
         {/* Welcome Section */}
         <div className="text-center mb-8">
@@ -188,5 +190,6 @@ export default function Home() {
         </div>
       </PageContainer>
     </AppLayout>
+    </ProtectedRoute>
   )
 }
