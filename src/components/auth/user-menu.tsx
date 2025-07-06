@@ -1,18 +1,37 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useAuth } from './auth-provider'
+import { useAppStore } from '@/lib/store'
 import { User, LogOut, Settings, Heart } from 'lucide-react'
 
 export function UserMenu() {
   const { user, signOut } = useAuth()
+  const router = useRouter()
+  const { setActiveTab } = useAppStore()
   const [showMenu, setShowMenu] = useState(false)
 
   if (!user) return null
 
   const handleSignOut = async () => {
-    await signOut()
-    setShowMenu(false)
+    try {
+      // Reset navigation to dashboard
+      setActiveTab('dashboard')
+
+      // Sign out from Supabase
+      await signOut()
+
+      // Close menu
+      setShowMenu(false)
+
+      // Force redirect to sign-in page
+      router.push('/auth/signin')
+    } catch (error) {
+      console.error('Logout error:', error)
+      // Still redirect even if there's an error
+      router.push('/auth/signin')
+    }
   }
 
   const getUserInitials = (name: string) => {

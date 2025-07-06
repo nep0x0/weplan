@@ -26,52 +26,9 @@ export function BudgetPage() {
 
 
 
-  // Mock data for demo if no categories exist
-  const mockCategories = budgetCategories.length === 0 ? [
-    {
-      id: '1',
-      wedding_id: 'demo',
-      name: 'Venue',
-      allocated_amount: 20000000,
-      spent_amount: 18000000,
-      color: '#E11D48',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '2',
-      wedding_id: 'demo',
-      name: 'Catering',
-      allocated_amount: 15000000,
-      spent_amount: 12000000,
-      color: '#059669',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '3',
-      wedding_id: 'demo',
-      name: 'Photography',
-      allocated_amount: 8000000,
-      spent_amount: 8000000,
-      color: '#3B82F6',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '4',
-      wedding_id: 'demo',
-      name: 'Decoration',
-      allocated_amount: 5000000,
-      spent_amount: 3000000,
-      color: '#F59E0B',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }
-  ] : budgetCategories
-
-  const displayTotalAllocated = mockCategories.reduce((sum, cat) => sum + cat.allocated_amount, 0)
-  const displayTotalSpent = mockCategories.reduce((sum, cat) => sum + cat.spent_amount, 0)
+  // Use real data only
+  const displayTotalAllocated = budgetCategories.reduce((sum, cat) => sum + cat.allocated_amount, 0)
+  const displayTotalSpent = budgetCategories.reduce((sum, cat) => sum + cat.spent_amount, 0)
   const displaySpentPercentage = displayTotalAllocated > 0 ? Math.round((displayTotalSpent / displayTotalAllocated) * 100) : 0
 
 
@@ -171,7 +128,20 @@ export function BudgetPage() {
 
           {/* Category List */}
           <div className="space-y-3">
-            {mockCategories.map((category) => {
+            {budgetCategories.length === 0 ? (
+              <div className="text-center py-12">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <DollarSign size={24} className="text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No Budget Categories Yet</h3>
+                <p className="text-gray-600 mb-4">Start planning your wedding budget by adding your first category.</p>
+                <Button onClick={() => setShowAddForm(true)} className="bg-primary hover:bg-primary/90">
+                  <Plus size={16} className="mr-2" />
+                  Add Your First Category
+                </Button>
+              </div>
+            ) : (
+              budgetCategories.map((category) => {
               const categoryPercentage = category.allocated_amount > 0 
                 ? Math.round((category.spent_amount / category.allocated_amount) * 100) 
                 : 0
@@ -230,8 +200,8 @@ export function BudgetPage() {
                     </div>
                   </div>
                 </AppCard>
-              )
-            })}
+              })
+            )}
           </div>
         </div>
       </div>

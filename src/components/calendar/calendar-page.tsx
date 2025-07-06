@@ -33,84 +33,9 @@ export function CalendarPage() {
   const [editingEvent, setEditingEvent] = useState<string | null>(null)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
 
-  // Mock data for demo if no events exist
-  const mockEvents = calendarEvents.length === 0 ? [
-    {
-      id: '1',
-      wedding_id: 'demo',
-      title: 'Wedding Day',
-      description: 'The big day! Ceremony and reception',
-      start_date: '2025-06-15T14:00:00Z',
-      end_date: '2025-06-15T23:00:00Z',
-      location: 'Grand Ballroom Hotel',
-      type: 'ceremony' as const,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '2',
-      wedding_id: 'demo',
-      title: 'Venue Visit',
-      description: 'Final venue walkthrough with coordinator',
-      start_date: '2024-12-20T10:00:00Z',
-      end_date: '2024-12-20T12:00:00Z',
-      location: 'Grand Ballroom Hotel',
-      type: 'appointment' as const,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '3',
-      wedding_id: 'demo',
-      title: 'Cake Tasting',
-      description: 'Taste and finalize wedding cake design',
-      start_date: '2024-12-18T15:00:00Z',
-      end_date: '2024-12-18T17:00:00Z',
-      location: 'Sweet Dreams Bakery',
-      type: 'appointment' as const,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '4',
-      wedding_id: 'demo',
-      title: 'Send Invitations',
-      description: 'Deadline to send wedding invitations',
-      start_date: '2024-12-25T23:59:00Z',
-      end_date: undefined,
-      location: undefined,
-      type: 'deadline' as const,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '5',
-      wedding_id: 'demo',
-      title: 'Dress Fitting',
-      description: 'Final dress fitting appointment',
-      start_date: '2025-01-10T14:00:00Z',
-      end_date: '2025-01-10T16:00:00Z',
-      location: 'Bridal Boutique',
-      type: 'appointment' as const,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '6',
-      wedding_id: 'demo',
-      title: 'Rehearsal Dinner',
-      description: 'Wedding rehearsal and dinner with family',
-      start_date: '2025-06-14T18:00:00Z',
-      end_date: '2025-06-14T22:00:00Z',
-      location: 'Restaurant Venue',
-      type: 'ceremony' as const,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }
-  ] : calendarEvents
-
+  // Use real data only - no mock data
   // Filter events
-  const filteredEvents = mockEvents.filter(event => {
+  const filteredEvents = calendarEvents.filter(event => {
     if (activeFilter === 'all') return true
     return event.type === activeFilter
   })
@@ -177,11 +102,11 @@ export function CalendarPage() {
 
 
   const eventTypeCounts = {
-    all: mockEvents.length,
-    ceremony: mockEvents.filter(e => e.type === 'ceremony').length,
-    appointment: mockEvents.filter(e => e.type === 'appointment').length,
-    deadline: mockEvents.filter(e => e.type === 'deadline').length,
-    reminder: mockEvents.filter(e => e.type === 'reminder').length
+    all: calendarEvents.length,
+    ceremony: calendarEvents.filter(e => e.type === 'ceremony').length,
+    appointment: calendarEvents.filter(e => e.type === 'appointment').length,
+    deadline: calendarEvents.filter(e => e.type === 'deadline').length,
+    reminder: calendarEvents.filter(e => e.type === 'reminder').length
   }
 
   const filters = [
@@ -230,7 +155,7 @@ export function CalendarPage() {
             <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
               <CalendarIcon size={20} className="text-primary" />
             </div>
-            <p className="text-lg font-semibold">{mockEvents.length}</p>
+            <p className="text-lg font-semibold">{calendarEvents.length}</p>
             <p className="text-xs text-muted-foreground">Total Events</p>
           </AppCard>
           

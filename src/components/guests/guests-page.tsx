@@ -34,97 +34,16 @@ export function GuestsPage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all')
   const [sortBy, setSortBy] = useState<SortType>('name')
 
-  // Mock data for demo if no guests exist
-  const mockGuests = guests.length === 0 ? [
-    {
-      id: '1',
-      wedding_id: 'demo',
-      name: 'John Smith',
-      email: 'john.smith@email.com',
-      phone: '+62 812-3456-7890',
-      rsvp_status: 'yes' as const,
-      plus_ones: 1,
-      dietary_restrictions: 'Vegetarian',
-      table_number: 1,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '2',
-      wedding_id: 'demo',
-      name: 'Sarah Johnson',
-      email: 'sarah.j@email.com',
-      phone: '+62 813-9876-5432',
-      rsvp_status: 'yes' as const,
-      plus_ones: 0,
-      dietary_restrictions: undefined,
-      table_number: 2,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '3',
-      wedding_id: 'demo',
-      name: 'Mike Wilson',
-      email: 'mike.wilson@email.com',
-      phone: undefined,
-      rsvp_status: 'pending' as const,
-      plus_ones: 2,
-      dietary_restrictions: undefined,
-      table_number: undefined,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '4',
-      wedding_id: 'demo',
-      name: 'Emily Davis',
-      email: 'emily.davis@email.com',
-      phone: '+62 814-5555-1234',
-      rsvp_status: 'no' as const,
-      plus_ones: 1,
-      dietary_restrictions: undefined,
-      table_number: undefined,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '5',
-      wedding_id: 'demo',
-      name: 'David Brown',
-      email: 'david.brown@email.com',
-      phone: '+62 815-7777-8888',
-      rsvp_status: 'yes' as const,
-      plus_ones: 1,
-      dietary_restrictions: 'Gluten-free',
-      table_number: 1,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '6',
-      wedding_id: 'demo',
-      name: 'Lisa Anderson',
-      email: 'lisa.anderson@email.com',
-      phone: undefined,
-      rsvp_status: 'pending' as const,
-      plus_ones: 0,
-      dietary_restrictions: undefined,
-      table_number: undefined,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }
-  ] : guests
-
-  const confirmedCount = mockGuests.filter(guest => guest.rsvp_status === 'yes').length
-  const declinedCount = mockGuests.filter(guest => guest.rsvp_status === 'no').length
-  const pendingCount = mockGuests.filter(guest => guest.rsvp_status === 'pending').length
-  const totalAttendees = mockGuests
+  // Use real data only - no mock data
+  const confirmedCount = guests.filter(guest => guest.rsvp_status === 'yes').length
+  const declinedCount = guests.filter(guest => guest.rsvp_status === 'no').length
+  const pendingCount = guests.filter(guest => guest.rsvp_status === 'pending').length
+  const totalAttendees = guests
     .filter(guest => guest.rsvp_status === 'yes')
     .reduce((sum, guest) => sum + 1 + guest.plus_ones, 0)
 
   // Filter and sort guests
-  const filteredGuests = mockGuests
+  const filteredGuests = guests
     .filter(guest => {
       // Search filter
       if (searchQuery) {
@@ -175,7 +94,7 @@ export function GuestsPage() {
   }
 
   const filters = [
-    { key: 'all' as const, label: 'All', count: mockGuests.length },
+    { key: 'all' as const, label: 'All', count: guests.length },
     { key: 'yes' as const, label: 'Confirmed', count: confirmedCount },
     { key: 'pending' as const, label: 'Pending', count: pendingCount },
     { key: 'no' as const, label: 'Declined', count: declinedCount }
@@ -205,7 +124,7 @@ export function GuestsPage() {
             <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
               <Users size={20} className="text-primary" />
             </div>
-            <p className="text-lg font-semibold">{mockGuests.length}</p>
+            <p className="text-lg font-semibold">{guests.length}</p>
             <p className="text-xs text-muted-foreground">Total Invited</p>
           </AppCard>
           

@@ -34,81 +34,18 @@ export function TodosPage() {
   const [activeFilter, setActiveFilter] = useState<FilterType>('all')
   const [sortBy, setSortBy] = useState<SortType>('priority')
 
-  // Mock data for demo if no todos exist
-  const mockTodos = todos.length === 0 ? [
-    {
-      id: '1',
-      wedding_id: 'demo',
-      title: 'Book wedding venue',
-      description: 'Research and book the perfect venue for our special day',
-      completed: false,
-      priority: 'high' as const,
-      due_date: '2024-12-15',
-      category: 'Venue',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '2',
-      wedding_id: 'demo',
-      title: 'Send wedding invitations',
-      description: 'Design and send invitations to all guests',
-      completed: false,
-      priority: 'high' as const,
-      due_date: '2024-12-20',
-      category: 'Invitations',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '3',
-      wedding_id: 'demo',
-      title: 'Order wedding flowers',
-      description: 'Choose and order bridal bouquet and decorations',
-      completed: true,
-      priority: 'medium' as const,
-      due_date: '2024-12-10',
-      category: 'Decoration',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '4',
-      wedding_id: 'demo',
-      title: 'Wedding cake tasting',
-      description: 'Schedule cake tasting with 3 different bakeries',
-      completed: false,
-      priority: 'medium' as const,
-      due_date: '2024-12-08',
-      category: 'Catering',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: '5',
-      wedding_id: 'demo',
-      title: 'Plan honeymoon trip',
-      description: 'Research destinations and book flights',
-      completed: false,
-      priority: 'low' as const,
-      due_date: '2025-01-15',
-      category: 'Honeymoon',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }
-  ] : todos
-
-  const completedCount = mockTodos.filter(todo => todo.completed).length
-  const pendingCount = mockTodos.filter(todo => !todo.completed).length
-  const overdueCount = mockTodos.filter(todo => 
+  // Use real data only - no mock data
+  const completedCount = todos.filter(todo => todo.completed).length
+  const pendingCount = todos.filter(todo => !todo.completed).length
+  const overdueCount = todos.filter(todo =>
     !todo.completed && todo.due_date && isPast(parseISO(todo.due_date))
   ).length
-  const todayCount = mockTodos.filter(todo => 
+  const todayCount = todos.filter(todo =>
     !todo.completed && todo.due_date && isToday(parseISO(todo.due_date))
   ).length
 
   // Filter and sort todos
-  const filteredTodos = mockTodos
+  const filteredTodos = todos
     .filter(todo => {
       // Search filter
       if (searchQuery) {
@@ -152,7 +89,7 @@ export function TodosPage() {
     })
 
   const handleToggleComplete = (id: string) => {
-    const todo = mockTodos.find(t => t.id === id)
+    const todo = todos.find(t => t.id === id)
     if (todo) {
       updateTodo(id, { completed: !todo.completed })
     }
@@ -167,7 +104,7 @@ export function TodosPage() {
 
 
   const filters = [
-    { key: 'all' as const, label: 'All', count: mockTodos.length },
+    { key: 'all' as const, label: 'All', count: todos.length },
     { key: 'pending' as const, label: 'Pending', count: pendingCount },
     { key: 'completed' as const, label: 'Completed', count: completedCount },
     { key: 'overdue' as const, label: 'Overdue', count: overdueCount },
