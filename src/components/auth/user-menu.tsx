@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from './auth-provider'
 import { useAppStore } from '@/lib/store'
@@ -11,6 +11,25 @@ export function UserMenu() {
   const router = useRouter()
   const { setActiveTab } = useAppStore()
   const [showMenu, setShowMenu] = useState(false)
+  const [dropdownPosition, setDropdownPosition] = useState<'top' | 'bottom'>('bottom')
+  const buttonRef = useRef<HTMLButtonElement>(null)
+
+  // Calculate dropdown position based on button position
+  useEffect(() => {
+    if (showMenu && buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      const spaceBelow = windowHeight - buttonRect.bottom
+      const spaceAbove = buttonRect.top
+
+      // If there's less than 300px space below, show dropdown above
+      if (spaceBelow < 300 && spaceAbove > 200) {
+        setDropdownPosition('top')
+      } else {
+        setDropdownPosition('bottom')
+      }
+    }
+  }, [showMenu])
 
   if (!user) return null
 
@@ -48,6 +67,7 @@ export function UserMenu() {
   return (
     <div className="relative">
       <button
+        ref={buttonRef}
         onClick={() => setShowMenu(!showMenu)}
         className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted transition-colors"
       >
@@ -68,7 +88,11 @@ export function UserMenu() {
           />
           
           {/* Menu */}
-          <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-lg border border-border z-50">
+          <div className={`absolute right-0 w-64 bg-white rounded-lg shadow-lg border border-border z-50 ${
+            dropdownPosition === 'top'
+              ? 'bottom-full mb-2'
+              : 'top-full mt-2'
+          }`}>
             <div className="p-4 border-b border-border">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
