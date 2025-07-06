@@ -1,103 +1,193 @@
-import Image from "next/image";
+'use client'
+
+import { AppLayout, PageContainer, StatsCard } from '@/components/layout/app-layout'
+import { useAppStore } from '@/lib/store'
+import {
+  DollarSign,
+  CheckSquare,
+  Users,
+  Calendar,
+  Heart,
+  Plus
+} from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { BudgetPage } from '@/components/budget/budget-page'
+import { TodosPage } from '@/components/todos/todos-page'
+import { GuestsPage } from '@/components/guests/guests-page'
+import { CalendarPage } from '@/components/calendar/calendar-page'
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const {
+    activeTab,
+    getTotalBudgetSpent,
+    getTotalBudgetAllocated,
+    getCompletedTodosCount,
+    getPendingTodosCount,
+    getConfirmedGuestsCount,
+    getPendingRSVPCount
+  } = useAppStore()
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  // Mock data for demo
+  const totalBudget = 70000000 // 70 million IDR
+  const spentBudget = getTotalBudgetSpent() || 50000000 // 50 million IDR
+  const budgetPercentage = Math.round((spentBudget / totalBudget) * 100)
+
+  const completedTasks = getCompletedTodosCount() || 7
+  const pendingTasks = getPendingTodosCount() || 8
+
+  const confirmedGuests = getConfirmedGuestsCount() || 30
+  const totalGuests = confirmedGuests + getPendingRSVPCount() || 45
+
+  const daysToWedding = 120
+
+  // Handle different tabs
+  if (activeTab === 'budget') {
+    return (
+      <AppLayout>
+        <BudgetPage />
+      </AppLayout>
+    )
+  }
+
+  if (activeTab === 'todos') {
+    return (
+      <AppLayout>
+        <TodosPage />
+      </AppLayout>
+    )
+  }
+
+  if (activeTab === 'guests') {
+    return (
+      <AppLayout>
+        <GuestsPage />
+      </AppLayout>
+    )
+  }
+
+  if (activeTab === 'calendar') {
+    return (
+      <AppLayout>
+        <CalendarPage />
+      </AppLayout>
+    )
+  }
+
+  if (activeTab !== 'dashboard') {
+    return (
+      <AppLayout>
+        <PageContainer
+          title={activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+          subtitle={`Manage your wedding ${activeTab}`}
+        >
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mx-auto">
+                <Heart className="w-8 h-8 text-muted-foreground" />
+              </div>
+              <h3 className="text-lg font-semibold">Coming Soon</h3>
+              <p className="text-muted-foreground max-w-sm">
+                This feature is being built with love. Check back soon!
+              </p>
+            </div>
+          </div>
+        </PageContainer>
+      </AppLayout>
+    )
+  }
+
+  return (
+    <AppLayout>
+      <PageContainer>
+        {/* Welcome Section */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl font-bold mb-2">Wedding Planner</h1>
+          <p className="text-muted-foreground">
+            Plan your perfect wedding day
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <StatsCard
+            title="Budget"
+            value={`${budgetPercentage}%`}
+            subtitle={`Rp ${(spentBudget / 1000000).toFixed(0)}M used`}
+            icon={<DollarSign size={20} />}
+            color="primary"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <StatsCard
+            title="Tasks"
+            value={`${completedTasks}/${completedTasks + pendingTasks}`}
+            subtitle={`${pendingTasks} pending`}
+            icon={<CheckSquare size={20} />}
+            color={pendingTasks === 0 ? 'success' : 'warning'}
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          <StatsCard
+            title="Guests"
+            value={confirmedGuests}
+            subtitle={`${totalGuests} invited`}
+            icon={<Users size={20} />}
+            color="success"
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+          <StatsCard
+            title="Days Left"
+            value={daysToWedding}
+            subtitle="Until wedding"
+            icon={<Calendar size={20} />}
+            color="muted"
+          />
+        </div>
+
+        {/* Quick Actions */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-lg font-semibold">Quick Actions</h2>
+            <Button size="sm" variant="outline">
+              <Plus size={16} className="mr-2" />
+              Add New
+            </Button>
+          </div>
+
+          <div className="grid gap-4">
+            <div className="bg-white rounded-xl border border-border p-6 card-shadow">
+              <h3 className="font-semibold mb-2">Recent Activity</h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-success rounded-full"></div>
+                  <span className="text-muted-foreground">Task completed: Order flowers</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  <span className="text-muted-foreground">Budget updated: Photography</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span className="text-muted-foreground">Guest added: Mike Johnson</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white rounded-xl border border-border p-6 card-shadow">
+              <h3 className="font-semibold mb-2">Upcoming Deadlines</h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center justify-between">
+                  <span>📋 Book photographer</span>
+                  <span className="text-orange-600 font-medium">3 days</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>🎂 Order wedding cake</span>
+                  <span className="text-orange-600 font-medium">1 week</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>💐 Finalize decorations</span>
+                  <span className="text-muted-foreground">2 weeks</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </PageContainer>
+    </AppLayout>
+  )
 }
