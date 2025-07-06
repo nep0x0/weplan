@@ -8,15 +8,22 @@ export function EnvCheck({ children }: { children: React.ReactNode }) {
   const [missingVars, setMissingVars] = useState<string[]>([])
 
   useEffect(() => {
-    const requiredVars = [
-      'NEXT_PUBLIC_SUPABASE_URL',
-      'NEXT_PUBLIC_SUPABASE_ANON_KEY'
-    ]
+    // Check environment variables on client side
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-    const missing = requiredVars.filter(varName => {
-      const value = process.env[varName]
-      return !value || value === 'undefined' || value === 'placeholder-key' || value.includes('placeholder')
-    })
+    console.log('EnvCheck - URL:', supabaseUrl ? 'Set' : 'Missing')
+    console.log('EnvCheck - Key:', supabaseKey ? 'Set' : 'Missing')
+
+    const missing = []
+
+    if (!supabaseUrl || supabaseUrl === 'undefined' || supabaseUrl.includes('placeholder')) {
+      missing.push('NEXT_PUBLIC_SUPABASE_URL')
+    }
+
+    if (!supabaseKey || supabaseKey === 'undefined' || supabaseKey.includes('placeholder')) {
+      missing.push('NEXT_PUBLIC_SUPABASE_ANON_KEY')
+    }
 
     if (missing.length > 0) {
       setMissingVars(missing)
@@ -24,6 +31,7 @@ export function EnvCheck({ children }: { children: React.ReactNode }) {
       console.error('Missing environment variables:', missing)
     } else {
       setEnvStatus('ok')
+      console.log('Environment variables OK')
     }
   }, [])
 

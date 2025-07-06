@@ -24,76 +24,67 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false) // Set to false for now to avoid loading issues
 
+  // Simplified auth initialization
   useEffect(() => {
-    const supabaseClient = getSupabase()
+    const initAuth = async () => {
+      try {
+        const supabaseClient = getSupabase()
+        const { data: { session } } = await supabaseClient.auth.getSession()
+        setSession(session)
+        setUser(session?.user ?? null)
+      } catch (error) {
+        console.error('Auth initialization error:', error)
+      }
+    }
 
-    // Get initial session
-    supabaseClient.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabaseClient.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      setUser(session?.user ?? null)
-      setLoading(false)
-    })
-
-    return () => subscription.unsubscribe()
+    initAuth()
   }, [])
 
   const signIn = async (email: string, password: string) => {
-    const supabaseClient = getSupabase()
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password,
-    })
-
-    if (error) {
-      return { error: error.message }
+    try {
+      const supabaseClient = getSupabase()
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password })
+      return error ? { error: error.message } : {}
+    } catch (error) {
+      return { error: 'Sign in failed' }
     }
-
-    return {}
   }
 
   const signUp = async (email: string, password: string, name: string) => {
-    const supabaseClient = getSupabase()
-    const { error } = await supabaseClient.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          name: name,
-        },
-      },
-    })
-
-    if (error) {
-      return { error: error.message }
+    try {
+      const supabaseClient = getSupabase()
+      const { error } = await supabaseClient.auth.signUp({
+        email,
+        password,
+        options: { data: { name } },
+      })
+      return error ? { error: error.message } : {}
+    } catch (error) {
+      return { error: 'Sign up failed' }
     }
-
-    return {}
   }
 
   const signOut = async () => {
-    const supabaseClient = getSupabase()
-    await supabaseClient.auth.signOut()
+    try {
+      const supabaseClient = getSupabase()
+      await supabaseClient.auth.signOut()
+    } catch (error) {
+      console.error('Sign out error:', error)
+    }
   }
 
   const signInWithGoogle = async () => {
-    const supabaseClient = getSupabase()
-    await supabaseClient.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/`,
-      },
-    })
+    try {
+      const supabaseClient = getSupabase()
+      await supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/` },
+      })
+    } catch (error) {
+      console.error('Google sign in error:', error)
+    }
   }
 
   const value = {
@@ -107,11 +98,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   return (
-    <EnvCheck>
-      <AuthContext.Provider value={value}>
-        {children}
-      </AuthContext.Provider>
-    </EnvCheck>
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
   )
 }
 

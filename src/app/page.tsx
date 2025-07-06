@@ -97,8 +97,7 @@ export default function Home() {
   }
 
   return (
-    <ProtectedRoute>
-      <AppLayout>
+    <AppLayout>
       <PageContainer>
         {/* Welcome Section */}
         <div className="text-center mb-8">
@@ -190,6 +189,5 @@ export default function Home() {
         </div>
       </PageContainer>
     </AppLayout>
-    </ProtectedRoute>
   )
 }
