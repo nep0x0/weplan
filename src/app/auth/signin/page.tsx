@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn, getSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useAuth } from '@/components/auth/auth-provider'
 import { Heart, Mail, Lock, Eye, EyeOff } from 'lucide-react'
 
 export default function SignInPage() {
@@ -15,6 +15,7 @@ export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+  const { signIn, signInWithGoogle } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -22,17 +23,11 @@ export default function SignInPage() {
     setError('')
 
     try {
-      const result = await signIn('credentials', {
-        email,
-        password,
-        redirect: false,
-      })
+      const result = await signIn(email, password)
 
-      if (result?.error) {
-        setError('Invalid email or password')
+      if (result.error) {
+        setError(result.error)
       } else {
-        // Refresh session and redirect
-        await getSession()
         router.push('/')
         router.refresh()
       }
@@ -44,7 +39,7 @@ export default function SignInPage() {
   }
 
   const handleGoogleSignIn = () => {
-    signIn('google', { callbackUrl: '/' })
+    signInWithGoogle()
   }
 
   return (

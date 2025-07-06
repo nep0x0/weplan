@@ -2,6 +2,7 @@
 
 import { cn } from '@/lib/utils'
 import { useAppStore } from '@/lib/store'
+import { UserMenu } from '@/components/auth/user-menu'
 import { 
   Home, 
   DollarSign, 
@@ -115,15 +116,7 @@ export function SidebarNavigation() {
       </div>
       
       <div className="p-4 border-t border-border">
-        <div className="flex items-center gap-3 px-4 py-3">
-          <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-            <span className="text-xs font-semibold text-primary-foreground">P</span>
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium truncate">Wedding Planner</p>
-            <p className="text-xs text-muted-foreground">Plan your perfect day</p>
-          </div>
-        </div>
+        <UserMenu />
       </div>
     </nav>
   )

@@ -1,11 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useAuth } from '@/components/auth/auth-provider'
 import { Heart, Mail, Lock, Eye, EyeOff, User } from 'lucide-react'
 
 export default function SignUpPage() {
@@ -20,6 +20,7 @@ export default function SignUpPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const router = useRouter()
+  const { signUp, signInWithGoogle } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -40,37 +41,15 @@ export default function SignUpPage() {
     }
 
     try {
-      // Call our signup API
-      const response = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          password: formData.password,
-        }),
-      })
+      const result = await signUp(formData.email, formData.password, formData.name)
 
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Something went wrong')
-      }
-
-      // Auto sign in after successful registration
-      const result = await signIn('credentials', {
-        email: formData.email,
-        password: formData.password,
-        redirect: false,
-      })
-
-      if (result?.error) {
-        setError('Account created but sign in failed. Please try signing in manually.')
+      if (result.error) {
+        setError(result.error)
       } else {
-        router.push('/')
-        router.refresh()
+        // Show success message for email confirmation
+        setError('')
+        alert('Please check your email to confirm your account!')
+        router.push('/auth/signin')
       }
     } catch (error: any) {
       setError(error.message || 'Something went wrong. Please try again.')
@@ -80,7 +59,7 @@ export default function SignUpPage() {
   }
 
   const handleGoogleSignIn = () => {
-    signIn('google', { callbackUrl: '/' })
+    signInWithGoogle()
   }
 
   const handleInputChange = (field: string, value: string) => {
