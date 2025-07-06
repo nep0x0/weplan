@@ -264,17 +264,15 @@ export function GuestItem({ guest, onUpdateRSVP, onEdit, onDelete }: GuestItemPr
                   Mark as Declined
                 </Button>
               )}
-              {guest.rsvp_status !== 'pending' && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => onUpdateRSVP(guest.id, 'pending')}
-                  className="h-7 px-3 text-xs"
-                >
-                  <Clock size={12} className="mr-1" />
-                  Mark as Pending
-                </Button>
-              )}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onUpdateRSVP(guest.id, 'pending')}
+                className="h-7 px-3 text-xs"
+              >
+                <Clock size={12} className="mr-1" />
+                Mark as Pending
+              </Button>
             </div>
           </div>
         )}
