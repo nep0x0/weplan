@@ -18,7 +18,7 @@ import {
 import { CalendarView } from './calendar-view'
 import { EventForm } from './event-form'
 import { EventItem } from './event-item'
-import { parseISO, isSameDay } from 'date-fns'
+import { parseISO, isSameDay, format } from 'date-fns'
 
 type ViewType = 'month' | 'list'
 type FilterType = 'all' | 'appointment' | 'deadline' | 'reminder' | 'ceremony'
