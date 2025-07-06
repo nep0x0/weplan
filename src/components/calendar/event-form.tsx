@@ -32,7 +32,16 @@ const predefinedEvents = [
 export function EventForm({ eventId, initialDate, onClose }: EventFormProps) {
   const { calendarEvents, addCalendarEvent, updateCalendarEvent } = useAppStore()
   
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string
+    description: string
+    start_date: string
+    start_time: string
+    end_date: string
+    end_time: string
+    location: string
+    type: 'appointment' | 'deadline' | 'reminder' | 'ceremony'
+  }>({
     title: '',
     description: '',
     start_date: '',
@@ -40,7 +49,7 @@ export function EventForm({ eventId, initialDate, onClose }: EventFormProps) {
     end_date: '',
     end_time: '',
     location: '',
-    type: 'appointment' as const
+    type: 'appointment'
   })
   
   const [showPredefined, setShowPredefined] = useState(true)
