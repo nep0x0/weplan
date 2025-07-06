@@ -226,4 +226,99 @@
   .card-shadow-lg {
     box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   }
+
+  /* Text overflow and proportional fixes */
+  .text-ellipsis-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .text-ellipsis-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Better proportional spacing */
+  .space-y-proportional > * + * {
+    margin-top: clamp(0.5rem, 2vw, 1rem);
+  }
+
+  .space-x-proportional > * + * {
+    margin-left: clamp(0.5rem, 2vw, 1rem);
+  }
+
+  /* Responsive text sizing */
+  .text-responsive-xs {
+    font-size: clamp(0.75rem, 2vw, 0.875rem);
+  }
+
+  .text-responsive-sm {
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
+
+  .text-responsive-base {
+    font-size: clamp(1rem, 3vw, 1.125rem);
+  }
+
+  .text-responsive-lg {
+    font-size: clamp(1.125rem, 3.5vw, 1.25rem);
+  }
+
+  .text-responsive-xl {
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+  }
+
+  /* Container with better proportions */
+  .container-proportional {
+    width: 100%;
+    max-width: min(100vw - 2rem, 1200px);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+
+  /* Grid with proportional gaps */
+  .grid-proportional {
+    gap: clamp(0.75rem, 3vw, 1.5rem);
+  }
+
+  /* Flexible button sizing */
+  .btn-proportional {
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 4vw, 1.5rem);
+    font-size: clamp(0.875rem, 2.5vw, 1rem);
+  }
+
+  /* Card with better proportions */
+  .card-proportional {
+    padding: clamp(1rem, 4vw, 1.5rem);
+    border-radius: clamp(0.5rem, 2vw, 0.75rem);
+  }
+
+  /* Prevent text overflow in flex containers */
+  .flex-text-safe {
+    min-width: 0;
+    flex-shrink: 1;
+  }
+
+  /* Better line height for readability */
+  .leading-comfortable {
+    line-height: 1.6;
+  }
+
+  .leading-relaxed-mobile {
+    line-height: 1.5;
+  }
+
+  @media (min-width: 768px) {
+    .leading-relaxed-mobile {
+      line-height: 1.7;
+    }
+  }
 }

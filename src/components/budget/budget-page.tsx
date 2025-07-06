@@ -107,25 +107,25 @@ export function BudgetPage() {
       <div className="space-y-6">
         {/* Total Budget Card */}
         <AppCard className="text-center">
-          <div className="space-y-4">
+          <div className="space-y-proportional">
             <div>
-              <h2 className="text-3xl font-bold text-primary">{displaySpentPercentage}%</h2>
-              <p className="text-muted-foreground">Budget Used</p>
+              <h2 className="text-responsive-xl font-bold text-primary leading-comfortable">{displaySpentPercentage}%</h2>
+              <p className="text-muted-foreground text-responsive-sm leading-relaxed-mobile">Budget Used</p>
             </div>
-            
-            <BudgetProgress 
-              spent={displayTotalSpent} 
+
+            <BudgetProgress
+              spent={displayTotalSpent}
               allocated={displayTotalAllocated}
               className="max-w-xs mx-auto"
             />
-            
-            <div className="flex justify-between text-sm">
-              <div>
-                <p className="font-medium">{formatShortCurrency(displayTotalSpent)}</p>
+
+            <div className="flex justify-between text-responsive-sm gap-4">
+              <div className="flex-text-safe">
+                <p className="font-medium truncate">{formatShortCurrency(displayTotalSpent)}</p>
                 <p className="text-muted-foreground">Spent</p>
               </div>
-              <div>
-                <p className="font-medium">{formatShortCurrency(displayTotalAllocated)}</p>
+              <div className="flex-text-safe text-right">
+                <p className="font-medium truncate">{formatShortCurrency(displayTotalAllocated)}</p>
                 <p className="text-muted-foreground">Budget</p>
               </div>
             </div>
@@ -133,7 +133,7 @@ export function BudgetPage() {
         </AppCard>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 grid-proportional">
           <AppCard className="text-center">
             <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-2">
               <DollarSign size={20} className="text-primary" />

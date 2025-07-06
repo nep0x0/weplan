@@ -86,19 +86,19 @@ export function GuestItem({ guest, onUpdateRSVP, onEdit, onDelete }: GuestItemPr
           </div>
 
           {/* Content */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 flex-text-safe">
             <div className="flex items-start justify-between gap-2">
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 flex-text-safe">
                 {/* Name */}
-                <h3 className="font-medium text-sm leading-tight">
+                <h3 className="font-medium text-responsive-sm leading-comfortable truncate">
                   {guest.name}
                 </h3>
 
                 {/* Email */}
                 {guest.email && (
-                  <div className="flex items-center gap-1 mt-1">
-                    <Mail size={12} className="text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground truncate">
+                  <div className="flex items-center gap-1 mt-1 min-w-0">
+                    <Mail size={12} className="text-muted-foreground flex-shrink-0" />
+                    <span className="text-responsive-xs text-muted-foreground truncate">
                       {guest.email}
                     </span>
                   </div>
@@ -108,16 +108,16 @@ export function GuestItem({ guest, onUpdateRSVP, onEdit, onDelete }: GuestItemPr
                 <div className="flex items-center gap-3 mt-2">
                   {/* RSVP Status */}
                   <div className={cn(
-                    "inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium border",
+                    "inline-flex items-center gap-1 px-2 py-1 rounded-full text-responsive-xs font-medium border flex-shrink-0",
                     getRSVPColor(guest.rsvp_status)
                   )}>
                     {getRSVPIcon(guest.rsvp_status)}
-                    <span>{getRSVPLabel(guest.rsvp_status)}</span>
+                    <span className="whitespace-nowrap">{getRSVPLabel(guest.rsvp_status)}</span>
                   </div>
 
                   {/* Plus Ones */}
                   {guest.plus_ones > 0 && (
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1 text-responsive-xs text-muted-foreground flex-shrink-0">
                       <Users size={12} />
                       <span>+{guest.plus_ones}</span>
                     </div>

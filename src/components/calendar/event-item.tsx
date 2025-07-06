@@ -116,18 +116,18 @@ export function EventItem({ event, compact = false, onEdit, onDelete }: EventIte
           </div>
 
           {/* Content */}
-          <div className="flex-1 min-w-0">
-            <h4 className="font-medium text-sm leading-tight truncate">
+          <div className="flex-1 min-w-0 flex-text-safe">
+            <h4 className="font-medium text-responsive-sm leading-comfortable truncate">
               {event.title}
             </h4>
-            <p className="text-xs text-muted-foreground mt-1">
+            <p className="text-responsive-xs text-muted-foreground mt-1 leading-relaxed-mobile">
               {formatTime(startDate)}
               {endDate && ` - ${formatTime(endDate)}`}
             </p>
             {event.location && (
-              <div className="flex items-center gap-1 mt-1">
-                <MapPin size={12} className="text-muted-foreground" />
-                <span className="text-xs text-muted-foreground truncate">
+              <div className="flex items-center gap-1 mt-1 min-w-0">
+                <MapPin size={12} className="text-muted-foreground flex-shrink-0" />
+                <span className="text-responsive-xs text-muted-foreground truncate">
                   {event.location}
                 </span>
               </div>

@@ -98,23 +98,23 @@ export function TodoItem({ todo, onToggleComplete, onEdit, onDelete }: TodoItemP
           </button>
 
           {/* Content */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 flex-text-safe">
             <div className="flex items-start justify-between gap-2">
-              <div className="flex-1 min-w-0">
+              <div className="flex-1 min-w-0 flex-text-safe">
                 {/* Title */}
                 <h3 className={cn(
-                  "font-medium text-sm leading-tight",
+                  "font-medium text-responsive-sm leading-comfortable",
                   todo.completed && "line-through text-muted-foreground"
                 )}>
                   {todo.title}
                 </h3>
 
                 {/* Meta Info */}
-                <div className="flex items-center gap-3 mt-1">
+                <div className="flex items-center gap-2 mt-1 flex-wrap">
                   {/* Priority Indicator */}
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-1 flex-shrink-0">
                     <div className={cn("w-2 h-2 rounded-full", getPriorityDot(todo.priority))} />
-                    <span className="text-xs text-muted-foreground capitalize">
+                    <span className="text-responsive-xs text-muted-foreground capitalize">
                       {todo.priority}
                     </span>
                   </div>

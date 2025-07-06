@@ -68,20 +68,20 @@ export function PageContainer({
       {/* Desktop Header */}
       {(title || subtitle || action) && (
         <div className="hidden lg:block sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-border">
-          <div className="px-8 py-6">
-            <div className="flex items-center justify-between">
-              <div>
-                {title && <h1 className="text-2xl font-semibold">{title}</h1>}
-                {subtitle && <p className="text-muted-foreground mt-1">{subtitle}</p>}
+          <div className="container-proportional py-6">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex-text-safe">
+                {title && <h1 className="text-responsive-xl font-semibold leading-comfortable">{title}</h1>}
+                {subtitle && <p className="text-muted-foreground mt-1 text-responsive-sm leading-relaxed-mobile">{subtitle}</p>}
               </div>
-              {action && <div>{action}</div>}
+              {action && <div className="flex-shrink-0">{action}</div>}
             </div>
           </div>
         </div>
       )}
-      
+
       {/* Content */}
-      <div className="p-4 lg:p-8">
+      <div className="container-proportional space-y-proportional">
         {children}
       </div>
     </div>
@@ -98,18 +98,20 @@ interface AppCardProps {
 
 export function AppCard({ children, className, onClick, hover = false }: AppCardProps) {
   const Component = onClick ? 'button' : 'div'
-  
+
   return (
     <Component
       onClick={onClick}
       className={cn(
-        "bg-white rounded-xl border border-border p-6 card-shadow",
+        "bg-white rounded-xl border border-border card-proportional card-shadow overflow-hidden",
         hover && "transition-all duration-200 hover:card-shadow-lg hover:scale-[1.02]",
         onClick && "haptic cursor-pointer text-left w-full",
         className
       )}
     >
-      {children}
+      <div className="flex-text-safe leading-comfortable">
+        {children}
+      </div>
     </Component>
   )
 }
