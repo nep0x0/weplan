@@ -177,41 +177,82 @@ export default function Home() {
           </div>
 
           <div className="grid gap-4">
-            <div className="bg-white rounded-xl border border-border p-6 card-shadow">
-              <h3 className="font-semibold mb-2">Recent Activity</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-success rounded-full"></div>
-                  <span className="text-muted-foreground">Task completed: Order flowers</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-primary rounded-full"></div>
-                  <span className="text-muted-foreground">Budget updated: Photography</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-muted-foreground">Guest added: Mike Johnson</span>
+            {/* Getting Started Guide for New Users */}
+            {budgetCategories.length === 0 && todos.length === 0 && guests.length === 0 ? (
+              <div className="bg-white rounded-xl border border-border p-6 card-shadow">
+                <h3 className="font-semibold mb-4">🎉 Welcome to Your Wedding Planner!</h3>
+                <div className="space-y-4 text-sm">
+                  <p className="text-muted-foreground">
+                    Let's get started planning your perfect wedding day. Here's what you can do:
+                  </p>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                        <DollarSign size={16} className="text-primary" />
+                      </div>
+                      <div>
+                        <p className="font-medium">Set Your Budget</p>
+                        <p className="text-muted-foreground text-xs">Add budget categories like venue, catering, photography</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-orange-50 rounded-full flex items-center justify-center">
+                        <CheckSquare size={16} className="text-orange-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium">Create Your To-Do List</p>
+                        <p className="text-muted-foreground text-xs">Add tasks like book venue, send invitations, order flowers</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-green-50 rounded-full flex items-center justify-center">
+                        <Users size={16} className="text-green-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium">Manage Your Guest List</p>
+                        <p className="text-muted-foreground text-xs">Add guests and track RSVPs</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="bg-white rounded-xl border border-border p-6 card-shadow">
-              <h3 className="font-semibold mb-2">Upcoming Deadlines</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex items-center justify-between">
-                  <span>📋 Book photographer</span>
-                  <span className="text-orange-600 font-medium">3 days</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>🎂 Order wedding cake</span>
-                  <span className="text-orange-600 font-medium">1 week</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>💐 Finalize decorations</span>
-                  <span className="text-muted-foreground">2 weeks</span>
+            ) : (
+              /* Real Activity for Existing Users */
+              <div className="bg-white rounded-xl border border-border p-6 card-shadow">
+                <h3 className="font-semibold mb-2">Your Wedding Progress</h3>
+                <div className="space-y-3 text-sm">
+                  {budgetCategories.length > 0 && (
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-muted-foreground">
+                        {budgetCategories.length} budget {budgetCategories.length === 1 ? 'category' : 'categories'} created
+                      </span>
+                    </div>
+                  )}
+                  {todos.length > 0 && (
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                      <span className="text-muted-foreground">
+                        {getCompletedTodosCount()} of {todos.length} tasks completed
+                      </span>
+                    </div>
+                  )}
+                  {guests.length > 0 && (
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-muted-foreground">
+                        {guests.length} {guests.length === 1 ? 'guest' : 'guests'} added to your list
+                      </span>
+                    </div>
+                  )}
+                  {budgetCategories.length === 0 && todos.length === 0 && guests.length === 0 && (
+                    <div className="text-center py-4">
+                      <p className="text-muted-foreground">No activity yet. Start planning your wedding!</p>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </PageContainer>

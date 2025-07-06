@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react'
 import { BottomNavigation, SidebarNavigation } from '@/components/ui/bottom-navigation'
+import { UserMenu } from '@/components/auth/user-menu'
 import { cn } from '@/lib/utils'
 
 interface AppLayoutProps {
@@ -28,9 +29,7 @@ export function AppLayout({ children, className }: AppLayoutProps) {
               <p className="text-xs text-muted-foreground">Wedding Planner</p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-xs font-semibold text-primary-foreground">P</span>
-              </div>
+              <UserMenu />
             </div>
           </div>
         </header>
