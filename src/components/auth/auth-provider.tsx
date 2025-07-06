@@ -3,7 +3,6 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import type { User, Session } from '@supabase/supabase-js'
 import { getSupabase } from '@/lib/supabase-client'
-import { EnvCheck } from '@/components/env-check'
 
 interface AuthContextType {
   user: User | null
@@ -24,7 +23,7 @@ interface AuthProviderProps {
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
   const [session, setSession] = useState<Session | null>(null)
-  const [loading, setLoading] = useState(false) // Set to false for now to avoid loading issues
+  const [loading] = useState(false) // Set to false for now to avoid loading issues
 
   // Simplified auth initialization
   useEffect(() => {
@@ -47,7 +46,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const supabaseClient = getSupabase()
       const { error } = await supabaseClient.auth.signInWithPassword({ email, password })
       return error ? { error: error.message } : {}
-    } catch (error) {
+    } catch {
       return { error: 'Sign in failed' }
     }
   }
@@ -61,7 +60,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         options: { data: { name } },
       })
       return error ? { error: error.message } : {}
-    } catch (error) {
+    } catch {
       return { error: 'Sign up failed' }
     }
   }

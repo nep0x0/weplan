@@ -6,7 +6,7 @@ import { getSupabase } from '@/lib/supabase-client'
 export default function DebugSupabasePage() {
   const [status, setStatus] = useState('Initializing...')
   const [logs, setLogs] = useState<string[]>([])
-  const [sessionInfo, setSessionInfo] = useState<any>(null)
+  const [sessionInfo, setSessionInfo] = useState<Record<string, unknown> | null>(null)
 
   const addLog = (message: string) => {
     console.log(message)
@@ -66,8 +66,9 @@ export default function DebugSupabasePage() {
         
         addLog('✅ All tests completed')
         
-      } catch (error: any) {
-        addLog(`❌ Critical error: ${error.message}`)
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+        addLog(`❌ Critical error: ${errorMessage}`)
         setStatus('Critical Error')
       }
     }
@@ -134,12 +135,12 @@ export default function DebugSupabasePage() {
             >
               Reload Test
             </button>
-            <a 
-              href="/" 
-              className="inline-block px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+            <button
+              onClick={() => window.location.href = '/'}
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
             >
               Go to Main App
-            </a>
+            </button>
           </div>
         </div>
       </div>

@@ -1,7 +1,6 @@
 'use client'
 
 import { AppLayout, PageContainer, StatsCard } from '@/components/layout/app-layout'
-import { ProtectedRoute } from '@/components/auth/protected-route'
 import { useAppStore } from '@/lib/store'
 import {
   DollarSign,
