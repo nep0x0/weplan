@@ -26,9 +26,6 @@ export default function Home() {
     budgetCategories,
     todos,
     guests,
-    setBudgetCategories,
-    setTodos,
-    setGuests,
     getTotalBudgetSpent,
     getCompletedTodosCount,
     getPendingTodosCount,
@@ -128,7 +125,7 @@ export default function Home() {
           </h1>
           <p className="text-muted-foreground">
             {budgetCategories.length === 0 && todos.length === 0 && guests.length === 0
-              ? "Let's start planning your perfect wedding day! Add your first budget, task, or guest to get started."
+              ? "Let&apos;s start planning your perfect wedding day! Add your first budget, task, or guest to get started."
               : "Plan your perfect wedding day"
             }
           </p>
@@ -183,7 +180,7 @@ export default function Home() {
                 <h3 className="font-semibold mb-4">🎉 Welcome to Your Wedding Planner!</h3>
                 <div className="space-y-4 text-sm">
                   <p className="text-muted-foreground">
-                    Let's get started planning your perfect wedding day. Here's what you can do:
+                    Let&apos;s get started planning your perfect wedding day. Here&apos;s what you can do:
                   </p>
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
