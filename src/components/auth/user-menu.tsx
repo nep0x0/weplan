@@ -136,7 +136,7 @@ export function UserMenu() {
               </div>
             </div>
 
-            <div className="py-2">
+            <div className="py-4">
               <div className="px-2 space-y-1">
                 <button
                   onClick={() => setShowMenu(false)}
@@ -155,9 +155,9 @@ export function UserMenu() {
                 </button>
               </div>
 
-              <hr className="my-2 mx-2" />
+              <hr className="my-3 mx-2" />
 
-              <div className="px-2 pb-2">
+              <div className="px-2 pb-3">
                 <button
                   onClick={handleSignOut}
                   className="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-red-50 text-red-600 transition-colors text-left"
