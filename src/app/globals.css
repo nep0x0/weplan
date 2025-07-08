@@ -162,6 +162,29 @@
     min-width: 44px;
   }
 
+  /* Prevent zoom on input focus on iOS */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+
+  @media (max-width: 768px) {
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    input[type="number"],
+    input[type="password"],
+    textarea,
+    select {
+      font-size: 16px !important;
+    }
+  }
+
   /* Focus styles for accessibility */
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-ring;
@@ -319,6 +342,51 @@
   @media (min-width: 768px) {
     .leading-relaxed-mobile {
       line-height: 1.7;
+    }
+  }
+
+  /* Mobile Modal Improvements */
+  .modal-mobile {
+    /* Better mobile modal positioning */
+    @media (max-width: 640px) {
+      align-items: flex-end;
+    }
+  }
+
+  .modal-content-mobile {
+    /* Mobile-first modal content */
+    @media (max-width: 640px) {
+      border-radius: 1rem 1rem 0 0;
+      max-height: 85vh;
+      width: 100%;
+    }
+  }
+
+  /* Better dropdown positioning */
+  .dropdown-responsive {
+    max-width: calc(100vw - 2rem);
+
+    @media (max-width: 640px) {
+      width: calc(100vw - 2rem);
+      left: 1rem !important;
+      right: 1rem !important;
+      transform: none !important;
+    }
+  }
+
+  /* Improved button spacing for mobile */
+  .btn-mobile-friendly {
+    @media (max-width: 640px) {
+      min-height: 48px;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+    }
+  }
+
+  /* Better form spacing on mobile */
+  .form-mobile-spacing {
+    @media (max-width: 640px) {
+      gap: 1rem;
     }
   }
 }

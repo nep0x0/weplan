@@ -19,8 +19,10 @@ export function UserMenu() {
     if (showMenu && buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect()
       const windowHeight = window.innerHeight
+
       const spaceBelow = windowHeight - buttonRect.bottom
       const spaceAbove = buttonRect.top
+
 
       // If there's less than 300px space below, show dropdown above
       if (spaceBelow < 300 && spaceAbove > 200) {
@@ -88,21 +90,21 @@ export function UserMenu() {
           />
           
           {/* Menu */}
-          <div className={`absolute right-0 w-64 bg-white rounded-lg shadow-lg border border-border z-50 ${
+          <div className={`absolute right-0 w-56 sm:w-64 bg-white rounded-lg shadow-lg border border-border z-50 ${
             dropdownPosition === 'top'
               ? 'bottom-full mb-2'
               : 'top-full mt-2'
-          }`}>
-            <div className="p-4 border-b border-border">
+          } max-w-[calc(100vw-2rem)]`}>
+            <div className="p-3 sm:p-4 border-b border-border">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-medium text-primary">
+                <div className="w-8 sm:w-10 h-8 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-xs sm:text-sm font-medium text-primary">
                     {getUserInitials(displayName)}
                   </span>
                 </div>
-                <div>
-                  <p className="font-medium text-sm">{displayName}</p>
-                  <p className="text-xs text-muted-foreground">{user.email}</p>
+                <div className="min-w-0 flex-1">
+                  <p className="font-medium text-sm truncate">{displayName}</p>
+                  <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                 </div>
               </div>
             </div>

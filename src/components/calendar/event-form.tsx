@@ -203,10 +203,10 @@ export function EventForm({ eventId, initialDate, onClose }: EventFormProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-end lg:items-center justify-center p-4">
-      <div className="bg-white rounded-t-xl lg:rounded-xl w-full max-w-md max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center">
+      <div className="bg-white rounded-t-xl sm:rounded-xl w-full sm:max-w-md max-h-[85vh] sm:max-h-[80vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-border">
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-border flex-shrink-0">
           <h2 className="text-lg font-semibold">
             {isEditing ? 'Edit Event' : 'Add New Event'}
           </h2>
@@ -215,8 +215,9 @@ export function EventForm({ eventId, initialDate, onClose }: EventFormProps) {
           </Button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        {/* Form - Scrollable */}
+        <div className="flex-1 overflow-y-auto">
+          <form onSubmit={handleSubmit} className="p-4 sm:p-6 space-y-4 sm:space-y-6">
           {/* Predefined Events */}
           {showPredefined && !isEditing && (
             <div className="space-y-3">
@@ -401,7 +402,11 @@ export function EventForm({ eventId, initialDate, onClose }: EventFormProps) {
               </Button>
             </div>
           )}
-        </form>
+          </form>
+        </div>
+
+        {/* Mobile Bottom Padding for Safe Area */}
+        <div className="h-4 sm:h-0 flex-shrink-0" />
       </div>
     </div>
   )
