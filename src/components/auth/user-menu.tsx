@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from './auth-provider'
 import { useAppStore } from '@/lib/store'
-import { User, LogOut, Settings, Heart } from 'lucide-react'
+import { User, LogOut, Settings } from 'lucide-react'
 
 export function UserMenu() {
   const { user, signOut } = useAuth()
@@ -37,16 +37,20 @@ export function UserMenu() {
         setDropdownPosition('bottom')
       }
 
-      // Horizontal positioning - for desktop sidebar, always align left
-      // For mobile/other contexts, check available space
-      if (buttonRect.left < 100) {
-        // If button is very close to left edge (like in sidebar), align dropdown to left of button
+      // Horizontal positioning logic
+      const isMobile = windowWidth < 640
+
+      if (isMobile) {
+        // Mobile: Always align to right edge to prevent overflow
+        setHorizontalPosition('right')
+      } else if (buttonRect.left < 100) {
+        // Desktop sidebar: align dropdown to left of button
         setHorizontalPosition('left')
       } else if (spaceRight < dropdownWidth && spaceLeft > dropdownWidth) {
-        // If not enough space on right but enough on left, align right edge of dropdown to right edge of button
+        // Not enough space on right: align to left
         setHorizontalPosition('left')
       } else {
-        // Default: align left edge of dropdown to right edge of button
+        // Default: align to right
         setHorizontalPosition('right')
       }
     }
@@ -118,10 +122,10 @@ export function UserMenu() {
               ? 'left-0'
               : 'right-0'
           }`}>
-            <div className="p-3 sm:p-4 border-b border-border">
+            <div className="p-4 border-b border-border">
               <div className="flex items-center gap-3">
-                <div className="w-8 sm:w-10 h-8 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-xs sm:text-sm font-medium text-primary">
+                <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-sm font-medium text-primary">
                     {getUserInitials(displayName)}
                   </span>
                 </div>
@@ -132,38 +136,35 @@ export function UserMenu() {
               </div>
             </div>
 
-            <div className="p-2">
-              <button
-                onClick={() => setShowMenu(false)}
-                className="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors text-left"
-              >
-                <User size={16} />
-                Profile Settings
-              </button>
-              
-              <button
-                onClick={() => setShowMenu(false)}
-                className="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors text-left"
-              >
-                <Settings size={16} />
-                App Settings
-              </button>
-              
-              <hr className="my-2" />
-              
-              <button
-                onClick={handleSignOut}
-                className="w-full flex items-center gap-3 px-3 py-2 text-sm rounded-lg hover:bg-red-50 text-red-600 transition-colors text-left"
-              >
-                <LogOut size={16} />
-                Sign Out
-              </button>
-            </div>
+            <div className="py-2">
+              <div className="px-2 space-y-1">
+                <button
+                  onClick={() => setShowMenu(false)}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-muted transition-colors text-left"
+                >
+                  <User size={16} />
+                  Profile Settings
+                </button>
 
-            <div className="p-4 border-t border-border bg-muted/30">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Heart size={12} className="text-primary" />
-                <span>Made with love for your special day</span>
+                <button
+                  onClick={() => setShowMenu(false)}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-muted transition-colors text-left"
+                >
+                  <Settings size={16} />
+                  App Settings
+                </button>
+              </div>
+
+              <hr className="my-2 mx-2" />
+
+              <div className="px-2 pb-2">
+                <button
+                  onClick={handleSignOut}
+                  className="w-full flex items-center gap-3 px-3 py-2.5 text-sm rounded-lg hover:bg-red-50 text-red-600 transition-colors text-left"
+                >
+                  <LogOut size={16} />
+                  Sign Out
+                </button>
               </div>
             </div>
           </div>
