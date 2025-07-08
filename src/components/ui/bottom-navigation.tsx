@@ -44,7 +44,7 @@ export function BottomNavigation() {
 
   return (
     <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-border safe-area-bottom">
-      <div className="flex items-center justify-around px-2 py-2">
+      <div className="flex items-center justify-around px-2 py-3">
         {tabs.map((tab) => {
           const Icon = tab.icon
           const isActive = activeTab === tab.id
@@ -54,9 +54,9 @@ export function BottomNavigation() {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                "flex flex-col items-center justify-center min-w-[60px] py-2 px-3 rounded-lg transition-all duration-200 haptic",
-                isActive 
-                  ? "text-primary bg-accent" 
+                "flex flex-col items-center justify-center min-w-[60px] py-2.5 px-3 rounded-lg transition-all duration-200 haptic",
+                isActive
+                  ? "text-primary bg-accent"
                   : "text-muted-foreground hover:text-foreground hover:bg-muted"
               )}
             >

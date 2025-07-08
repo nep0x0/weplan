@@ -18,7 +18,7 @@ export function AppLayout({ children, className }: AppLayoutProps) {
       
       {/* Main Content */}
       <main className={cn(
-        "pb-20 lg:pb-0 lg:pl-64", // pb-20 for mobile bottom nav, lg:pl-64 for desktop sidebar
+        "pb-24 lg:pb-0 lg:pl-64", // pb-24 for mobile bottom nav + safe area, lg:pl-64 for desktop sidebar
         className
       )}>
         {/* Mobile Header */}
@@ -80,7 +80,7 @@ export function PageContainer({
       )}
 
       {/* Content */}
-      <div className="container-proportional space-y-proportional">
+      <div className="container-proportional space-y-proportional pb-6 lg:pb-0">
         {children}
       </div>
     </div>

@@ -389,4 +389,38 @@
       gap: 1rem;
     }
   }
+
+  /* Navigation-aware spacing */
+  .mobile-nav-safe {
+    @media (max-width: 1024px) {
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  .mobile-nav-margin {
+    @media (max-width: 1024px) {
+      margin-bottom: calc(5rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  /* Modal positioning with navigation awareness */
+  .modal-nav-safe {
+    @media (max-width: 640px) {
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+    }
+  }
+
+  /* Content area with navigation clearance */
+  .content-nav-safe {
+    @media (max-width: 1024px) {
+      min-height: calc(100vh - 5rem - env(safe-area-inset-bottom));
+    }
+  }
+
+  /* Floating action button positioning */
+  .fab-nav-safe {
+    @media (max-width: 1024px) {
+      bottom: calc(5rem + 1rem + env(safe-area-inset-bottom));
+    }
+  }
 }

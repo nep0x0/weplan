@@ -203,8 +203,8 @@ export function EventForm({ eventId, initialDate, onClose }: EventFormProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center">
-      <div className="bg-white rounded-t-xl sm:rounded-xl w-full sm:max-w-md max-h-[85vh] sm:max-h-[80vh] overflow-hidden flex flex-col">
+    <div className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center pb-20 sm:pb-0">
+      <div className="bg-white rounded-t-xl sm:rounded-xl w-full sm:max-w-md max-h-[calc(85vh-5rem)] sm:max-h-[80vh] overflow-hidden flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 sm:p-6 border-b border-border flex-shrink-0">
           <h2 className="text-lg font-semibold">
