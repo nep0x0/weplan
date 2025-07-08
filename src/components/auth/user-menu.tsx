@@ -12,6 +12,7 @@ export function UserMenu() {
   const { setActiveTab } = useAppStore()
   const [showMenu, setShowMenu] = useState(false)
   const [dropdownPosition, setDropdownPosition] = useState<'top' | 'bottom'>('bottom')
+  const [horizontalPosition, setHorizontalPosition] = useState<'left' | 'right'>('right')
   const buttonRef = useRef<HTMLButtonElement>(null)
 
   // Calculate dropdown position based on button position
@@ -19,16 +20,34 @@ export function UserMenu() {
     if (showMenu && buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect()
       const windowHeight = window.innerHeight
+      const windowWidth = window.innerWidth
 
       const spaceBelow = windowHeight - buttonRect.bottom
       const spaceAbove = buttonRect.top
+      const spaceRight = windowWidth - buttonRect.right
+      const spaceLeft = buttonRect.left
 
+      // Dropdown width is approximately 224px (w-56) or 256px (w-64)
+      const dropdownWidth = 240
 
-      // If there's less than 300px space below, show dropdown above
+      // Vertical positioning
       if (spaceBelow < 300 && spaceAbove > 200) {
         setDropdownPosition('top')
       } else {
         setDropdownPosition('bottom')
+      }
+
+      // Horizontal positioning - for desktop sidebar, always align left
+      // For mobile/other contexts, check available space
+      if (buttonRect.left < 100) {
+        // If button is very close to left edge (like in sidebar), align dropdown to left of button
+        setHorizontalPosition('left')
+      } else if (spaceRight < dropdownWidth && spaceLeft > dropdownWidth) {
+        // If not enough space on right but enough on left, align right edge of dropdown to right edge of button
+        setHorizontalPosition('left')
+      } else {
+        // Default: align left edge of dropdown to right edge of button
+        setHorizontalPosition('right')
       }
     }
   }, [showMenu])
@@ -90,11 +109,15 @@ export function UserMenu() {
           />
           
           {/* Menu */}
-          <div className={`absolute right-0 w-56 sm:w-64 bg-white rounded-lg shadow-lg border border-border z-50 ${
+          <div className={`absolute w-56 sm:w-64 bg-white rounded-lg shadow-lg border border-border z-50 max-w-[calc(100vw-2rem)] ${
             dropdownPosition === 'top'
               ? 'bottom-full mb-2'
               : 'top-full mt-2'
-          } max-w-[calc(100vw-2rem)]`}>
+          } ${
+            horizontalPosition === 'left'
+              ? 'left-0'
+              : 'right-0'
+          }`}>
             <div className="p-3 sm:p-4 border-b border-border">
               <div className="flex items-center gap-3">
                 <div className="w-8 sm:w-10 h-8 sm:h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
